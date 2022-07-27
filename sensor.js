@@ -43,9 +43,9 @@ class Sensor {
                     poly[j],
                     poly[(j + 1) % poly.length]
                 )
-                if (value) [
+                if (value) {
                     touches.push(value)
-                ]
+                }
             }
         }
 

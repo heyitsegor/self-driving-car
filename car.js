@@ -12,7 +12,7 @@ class Car {
         this.angle = 0
         this.damaged = false
 
-        this.useBrain = controlType == "AI"
+        this.useBrain = controlType == 'AI'
 
         if (controlType != 'DUMMY') {
             this.sensor = new Sensor(this)
@@ -32,10 +32,9 @@ class Car {
         if (this.sensor) {
             this.sensor.update(roadBorders, traffic)
             const offsests = this.sensor.readings.map(
-                s => s == null ? 0 : 1 - s.offsest
+                s => s == null ? 0 : (1 - s.offset)
             )
             const outputs = NeuralNetwork.feedForward(offsests, this.brain)
-            console.log(outputs)
 
             if (this.useBrain) {
                 this.controls.forward = outputs[0]
@@ -64,26 +63,18 @@ class Car {
         const points = []
         const rad = Math.hypot(this.width, this.height) / 2
         const alpha = Math.atan2(this.width, this.height)
-
-        //top right point
         points.push({
             x: this.x - Math.sin(this.angle - alpha) * rad,
             y: this.y - Math.cos(this.angle - alpha) * rad
         })
-
-        //top left point
         points.push({
             x: this.x - Math.sin(this.angle + alpha) * rad,
             y: this.y - Math.cos(this.angle + alpha) * rad
         })
-
-        //bottom left point
         points.push({
             x: this.x - Math.sin(Math.PI + this.angle - alpha) * rad,
             y: this.y - Math.cos(Math.PI + this.angle - alpha) * rad
         })
-
-        //bottom right point
         points.push({
             x: this.x - Math.sin(Math.PI + this.angle + alpha) * rad,
             y: this.y - Math.cos(Math.PI + this.angle + alpha) * rad
@@ -128,7 +119,7 @@ class Car {
         this.y -= Math.cos(this.angle) * this.speed
     }
 
-    draw(ctx, color) {
+    draw(ctx, color, drawSensor = false) {
         if (this.damaged) {
             ctx.fillStyle = 'gray'
         }
@@ -142,7 +133,7 @@ class Car {
         }
         ctx.fill()
 
-        if (this.sensor) {
+        if (this.sensor && drawSensor) {
             this.sensor.draw(ctx)
         }
     }
