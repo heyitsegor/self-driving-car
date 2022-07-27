@@ -11,11 +11,28 @@ const N = 100
 const cars = generateCars(N)
 let bestCar = cars[0]
 if (localStorage.getItem('bestBrain')) {
-    bestCar.brain = JSON.parse(localStorage.getItem('bestBrain'))
+    for (let i = 0; i < cars.length; i++) {
+        cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'))
+        if (i != 0) {
+            NeuralNetwork.mutate(cars[i].brain, 0.1)
+        }
+    }
 }
-const traffic = [
-    new Car(road.getLaneCenter(1), -100, 30, 50, 'DUMMY', 2),
+const traffic = [new Car(road.getLaneCenter(1), -100, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(0), -300, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(2), -300, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(1), -500, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(0), -500, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(2), -700, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(0), -700, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(2), -900, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(1), -900, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(0), -1100, 30, 50, 'DUMMY', 2),
+new Car(road.getLaneCenter(1), -1100, 30, 50, 'DUMMY', 2),
 ]
+// for (let i = 0; i < 1000; i++) {
+//     traffic.push(new Car(road.getLaneCenter(Math.random() * 3), -200 * (i + Math.random()), 30, 50, 'DUMMY', 6))
+// }
 
 animate()
 
@@ -31,7 +48,7 @@ function discard() {
 function generateCars(N) {
     const cars = []
     for (let i = 1; i < N; i++) {
-        cars.push(new Car(road.getLaneCenter(1), 100, 30, 50, 'AI'))
+        cars.push(new Car(road.getLaneCenter(1), 100, 30, 50, 'AI', 3))
     }
     return cars
 }
